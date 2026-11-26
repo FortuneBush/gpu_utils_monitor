@@ -1,0 +1,14 @@
+[Unit]
+Description=Continuous Qwen3-30B-A3B inference load on GPU %i
+After=local-fs.target
+ConditionPathIsDirectory=/tmp/wyb/models/Qwen3-30B-A3B
+
+[Service]
+Type=simple
+WorkingDirectory=/tmp/wyb/code/vllm
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 /tmp/wyb/code/vllm/qwen_inference.py --model-path /tmp/wyb/models/Qwen3-30B-A3B --device %i --duration 0 --batch-size 256 --max-new-tokens 64 --workload-mode prefill --input-tokens 1024
+TimeoutStartSec=infinity
+KillMode=control-group
+Restart=on-failure
+RestartSec=15

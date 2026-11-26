@@ -1,0 +1,14 @@
+[Unit]
+Description=GPU idle monitor and direct Qwen inference load controller
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/tmp/wyb/code/vllm
+ExecStart=/usr/bin/python3 /tmp/wyb/code/vllm/vllm_inference_eval.py --idle-threshold 1800 --scan-interval 30 --launch-mode process
+Restart=always
+RestartSec=5
+KillMode=control-group
+
+[Install]
+WantedBy=multi-user.target
